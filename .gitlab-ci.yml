@@ -1,0 +1,35 @@
+stages:
+    - validate
+    - build
+    - upload
+
+precommit:
+    stage: validate
+    tags:
+        - docker
+    image: docker:latest
+    services:
+        - docker:dind
+    before_script:
+        - docker pull acdha/pre-commit
+    script:
+        - docker run --rm --volume "$PWD":/code acdha/pre-commit
+
+build:
+    stage: build
+    image: python:latest
+    script:
+        - cd "AWS CLI - Idaptive V1"
+        - python setup.py sdist bdist_wheel
+
+upload:
+    stage: upload
+    image: python:latest
+    only:
+        refs:
+            - master
+    script:
+        - cd "AWS CLI - Idaptive V1"
+        - pip install twine
+        - python setup.py sdist bdist_wheel
+        - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
