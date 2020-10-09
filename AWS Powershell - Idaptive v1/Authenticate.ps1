@@ -1,4 +1,4 @@
-﻿# Copyright 2019 IDaptive, LLC.
+# Copyright 2019 IDaptive, LLC.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,6 @@ param(
 [string]$Location
 )
 
-Import-Module .\Init.psm1 3>$null 4>$null -force 
+Import-Module .\Init.psm1 3>$null 4>$null -force
 
 Init-Authenticate -Tenant $Tenant $Location
