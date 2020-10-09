@@ -13,4 +13,4 @@
 # limitations under the License.
 
 
-from config import apps, environment, proxy  # noqa: F401
+from . import apps, environment, proxy  # noqa: F401
